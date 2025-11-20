@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import connectDB from './utils/db/connect.js';
 import dotenv from 'dotenv';
 import errorHandler from './middleware/errorHandler.js';
-import productRoutes from './routes/productRoutes.js';
+import {productRoutes, authRoutes } from './routes/productRoutes.js';
 
 dotenv.config();
 
@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(errorHandler);
 
 app.use('/api', productRoutes);
+app.use('/api/auth', authRoutes);
 
 app.listen(PORT, async () => {
   try {
