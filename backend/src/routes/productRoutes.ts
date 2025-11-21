@@ -1,6 +1,6 @@
 import express from 'express';
 import { createProduct, getProducts, getProductById , deleteProductById, updateProductById} from '../controllers/productController.js';
-import { registerUser, loginUser, logoutUser, refreshTokenUser } from '../controllers/userController.js';
+import { registerUser, loginUser, logoutUser, refreshTokenUser, getUsers } from '../controllers/userController.js';
 import type { Router } from 'express';
 import {authMiddleware, isAdminMiddleware} from '../middleware/authMiddleware.js';
 const productRoutes: Router = express.Router();
@@ -19,5 +19,6 @@ authRoutes.post('/register', registerUser);
 authRoutes.post('/login', loginUser);
 authRoutes.post('/logout', logoutUser);
 authRoutes.post('/refresh-token', refreshTokenUser);
+authRoutes.get('/users', authMiddleware, isAdminMiddleware, getUsers);
 
 export { productRoutes, authRoutes };

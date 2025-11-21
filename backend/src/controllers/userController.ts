@@ -167,4 +167,16 @@ const logoutUser = async (req: Request, res: Response) => {
   }
 };
 
-export { registerUser, loginUser, refreshTokenUser, logoutUser };
+const getUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching users", error });
+    }
+};
+
+
+
+
+export { registerUser, loginUser, refreshTokenUser, logoutUser, getUsers };

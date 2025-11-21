@@ -4,6 +4,17 @@ import type { Request, Response } from "express";
 import { Product } from "../models/Product.js";
 import {validateProduct } from '../utils/validation.js';
 
+import { createClient } from 'redis';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const redisUrl = process.env.REDIS_URL ?? "";
+if (!redisUrl) {
+    throw new Error("REDIS_URL environment variable is not set.");
+}
+const redisClient = createClient({ url: redisUrl });
+await redisClient.connect();
+
 
 const createProduct = async (req: Request, res: Response) => {
     try {
@@ -23,7 +34,13 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getProducts = async (req: Request, res: Response) => {
     try {
+        const cacheKey = 'products:all';
+        const cached = await redisClient.get(cacheKey);
+        if (cached) {
+            return res.status(200).json(JSON.parse(cached));
+        }
         const products = await Product.find();
+        await redisClient.set(cacheKey, JSON.stringify(products), { EX: 3600 }); // cache for 1 hour
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: "Error fetching products", error });
