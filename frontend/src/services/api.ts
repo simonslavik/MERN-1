@@ -2,12 +2,12 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 export const api = {
   // Auth endpoints
-  register: async (email: string, password: string) => {
+  register: async (username: string, email: string, password: string, role: "user" | "admin") => {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, email, password, role }),
     });
     return response.json();
   },

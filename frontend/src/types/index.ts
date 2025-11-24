@@ -7,12 +7,13 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface User {
   _id: string;
   email: string;
+  username: string;
   role: 'user' | 'admin';
   createdAt: string;
+  // password is typically excluded for security reasons
 }
 
 export interface AuthResponse {

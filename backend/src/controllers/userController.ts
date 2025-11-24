@@ -28,11 +28,11 @@ const registerUser = async (req: Request, res: Response) => {
         });
         
         res.status(201).json({
-            success: true,
-            message: "User registered successfully!",
-            accessToken,
-            refreshToken,
-            userId: savedUser._id.toString()
+          success: true,
+          message: "User registered successfully!",
+          accessToken,
+          refreshToken,
+          user: savedUser,
         });
     } catch (error) {
         res.status(500).json({ message: "Error registering user", error });
@@ -64,10 +64,11 @@ const loginUser = async (req: Request, res: Response) => {
             role: (user as any).role?.toString()
         });
 
-        res.json({
-        accessToken,
-        refreshToken,
-        userId: user._id.toString(),
+        res.status(201).json({
+          success: true,
+          accessToken,
+          refreshToken,
+          user,
         });
     } catch (error) {
         res.status(500).json({ message: "Error logging in", error });

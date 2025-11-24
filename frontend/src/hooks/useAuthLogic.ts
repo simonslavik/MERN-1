@@ -32,9 +32,9 @@ export const useAuthLogic = () => {
     }
   };
 
-  const register = async (email: string, password: string) => {
+  const register = async (username: string, email: string, password: string, role: "user" | "admin") => {
     const { api } = await import('../services/api');
-    const response = await api.register(email, password);
+    const response = await api.register(username, email, password, role);
     
     if (response.success && response.accessToken && response.user) {
       setToken(response.accessToken);
