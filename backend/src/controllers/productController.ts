@@ -37,11 +37,11 @@ const getProducts = async (req: Request, res: Response) => {
         const cacheKey = 'products:all';
         const cached = await redisClient.get(cacheKey);
         if (cached) {
-            return res.status(200).json(JSON.parse(cached));
+            return res.status(200).json({ success: true, data: JSON.parse(cached) });
         }
         const products = await Product.find();
         await redisClient.set(cacheKey, JSON.stringify(products), { EX: 3600 }); // cache for 1 hour
-        res.status(200).json(products);
+        res.status(200).json({ success: true, data: products });
     } catch (error) {
         res.status(500).json({ message: "Error fetching products", error });
     }

@@ -124,6 +124,7 @@ const refreshTokenUser = async (req: Request, res: Response) => {
     await RefreshToken.deleteOne({ token: refreshToken });
 
     res.json({
+      success: true,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
     });
@@ -170,10 +171,10 @@ const logoutUser = async (req: Request, res: Response) => {
 
 const getUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find();
-        res.json(users);
+      const users = await User.find();
+      res.json({ success: true, data: users });
     } catch (error) {
-        res.status(500).json({ message: "Error fetching users", error });
+      res.status(500).json({ success: false, message: "Error fetching users", error });
     }
 };
 
